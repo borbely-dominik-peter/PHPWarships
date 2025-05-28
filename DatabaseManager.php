@@ -37,6 +37,19 @@
         public function RemoveFromDB($id){
             $sql = "DELETE FROM ships WHERE id=$id;";
             $this->conn->query($sql);
+        }
+
+        public function ModifyinDB($NewShip){
+            $sql = "UPDATE ships SET 
+                name='$NewShip->name',
+                class='$NewShip->class',
+                type='$NewShip->type',
+                launched=$NewShip->launched,
+                main_gun_caliber='$NewShip->MainGunCaliber',
+                country='$NewShip->country'
+                WHERE id=$NewShip->id
+            ;";
+            $this->conn->query($sql);
             echo $sql;
         }
     } 
