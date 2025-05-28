@@ -2,9 +2,11 @@
     include_once("DatabaseManager.php");
     
     $DatabaseManager = new DatabaseManager("localhost","root","","warships");
-    $Data = $DatabaseManager->GetAllData();
+
     $todo = htmlspecialchars($_GET["todo"]) ?? "";
     $confirm = htmlspecialchars($_GET["confirm"]) ?? "";
+    $confirmres = htmlspecialchars($_GET["confirmres"]) ?? "";
+    $id = htmlspecialchars($_GET["id"]) ?? "";
     if ($todo == "add") {
         $name = htmlspecialchars($_POST["name"]) ?? "";
         $class = htmlspecialchars($_POST["class"]) ?? "";
@@ -15,22 +17,14 @@
         $NewShip = new Ship(null,$name,$class,$type,$year,$MainGunCaliber,$country);
         $DatabaseManager->AddToDB($NewShip);
     }
-    if ($confirm == "yes") {
-        echo "
-    <p>Are you sure you want do delete?</p>
-    <h1>THIS ACTION IS NOT REVERSABLE!!!</h1>
-    <form action='del.php' method='post'>
-        <div class='mb-3'>
-            <label for='yes' class='form-check-label'>Yes</label>
-            <input type='radio' class='form-check-input' name='yes' value='yes'>
-        </div>
-        <div>
-            <label for='no' class='form-check-label'>No</label>
-            <input type='radio' class='form-check-input' id='no' name='yes' value='no' checked>
-        </div>
-        <button type='submit' class='btn btn-warning'>Confirm</button>
-    </form>";
+    if ($confirm == "sent") {
+        echo "<b>To confirm deletion, scroll to the selected item and click the confirm deletion button!</b>";
     }
+    if ($confirmres == "true") {
+        $DatabaseManager->RemoveFromDB($id);
+    }
+    $Data = $DatabaseManager->GetAllData();
+
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +51,7 @@
             </thead>
             <tbody>
                 <?php 
+                if ($confirm != "yes") {
                     foreach($Data as $d){
                         echo "<tr>";
                         echo "<td>$d->name</td>";
@@ -65,9 +60,18 @@
                         echo "<td>$d->launched</td>";
                         echo "<td>$d->MainGunCaliber</td>";
                         echo "<td>$d->country</td>";
-                        echo "<td><a href='index.php?id=$d->id&confirm=yes' class='btn btn-danger'>Delete</td>";
+                        if ($confirm == "sent" && $id == $d->id) {
+                            echo "<td><a href='index.php?id=$d->id&confirm=done&confirmres=true' class='btn btn-danger'>Confirm deletion</td>";        
+                            echo "<td><a href='index.php?id=$d->id&confirm=done&confirmres=false' class='btn btn-danger'>Cancel</td>";        
+
+                        }
+                        else{
+                            echo "<td><a href='index.php?id=$d->id&confirm=sent' class='btn btn-warning'>Delete</td>";
+                        }
                         echo "</tr>";
                     }
+                }
+
                 ?>
             </tbody>
         </table>

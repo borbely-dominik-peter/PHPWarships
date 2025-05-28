@@ -35,9 +35,9 @@
         }
 
         public function RemoveFromDB($id){
-            $sql = "REMOVE FROM ships WHERE id=$id;";
+            $sql = "DELETE FROM ships WHERE id=$id;";
             $this->conn->query($sql);
-            
+            echo $sql;
         }
     } 
 ?>
