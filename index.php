@@ -1,11 +1,14 @@
 <?php 
     include_once("DatabaseManager.php");
+    include_once("Sort.php");
     
     $DatabaseManager = new DatabaseManager("localhost","root","","warships");
 
     $todo = htmlspecialchars($_GET["todo"]) ?? "";
     $confirm = htmlspecialchars($_GET["confirm"]) ?? "";
     $confirmres = htmlspecialchars($_GET["confirmres"]) ?? "";
+    $sort = htmlspecialchars($_GET["sort"]) ?? "";
+    $dir = htmlspecialchars($_GET["dir"]) ?? "";
     $id = htmlspecialchars($_GET["id"]) ?? -1;
     if ($todo == "add") {
         $name = htmlspecialchars($_POST["name"]) ?? "";
@@ -36,6 +39,9 @@
         $DatabaseManager->ModifyinDB($NewShip);
     }
     $Data = $DatabaseManager->GetAllData();
+    if ($sort != "") {
+        $Data = TableSort($sort, $dir, $Data);
+    }
 
 ?>
 
@@ -53,13 +59,14 @@
         <a href="Details.php?mod=false" class="btn btn-success">Add New</a>
         <table class="table table-striped">
             <thead>
-                <th>Name</th>
-                <th>Class</th>
-                <th>Type</th>
-                <th>Launched</th>
-                <th>Main gun caliber</th>
-                <th>Country</th>
+                <th>Name<a href="index.php?sort=name&dir=up">&uarr;</a>|<a href="index.php?sort=name&dir=down">&darr;</a></th>
+                <th>Class<a href="index.php?sort=class&dir=up">&uarr;</a>|<a href="index.php?sort=class&dir=down">&darr;</a></th>
+                <th>Type<a href="index.php?sort=type&dir=up">&uarr;</a>|<a href="index.php?sort=type&dir=down">&darr;</a></th>
+                <th>Launched<a href="index.php?sort=launched&dir=up">&uarr;</a>|<a href="index.php?sort=launched&dir=down">&darr;</a></th>
+                <th>Main gun caliber<a href="index.php?sort=MainGunCaliber&dir=up">&uarr;</a>|<a href="index.php?sort=MainGunCaliber&dir=down">&darr;</a></th>
+                <th>Country<a href="index.php?sort=country&dir=up">&uarr;</a>|<a href="index.php?sort=country&dir=down">&darr;</a></th>
                 <th>Delete</th>
+                <th>Modify</th>
             </thead>
             <tbody>
                 <?php 
