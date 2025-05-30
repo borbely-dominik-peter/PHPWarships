@@ -50,7 +50,16 @@
                 WHERE id=$NewShip->id
             ;";
             $this->conn->query($sql);
-            echo $sql;
+        }
+
+        public function Search($data, $SearchQuery){
+            $SearchedData = [];
+            foreach($data as $d){
+                if (strpos($d->name,$SearchQuery) !== false) {
+                    $SearchedData[] = $d;
+                }
+            }
+            return $SearchedData;
         }
     } 
 ?>
