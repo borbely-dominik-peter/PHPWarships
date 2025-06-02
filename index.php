@@ -85,19 +85,25 @@
             }
         ?>
         <div class="row mb-2">
-            <div class="col-md-4 col-sm-12">
-                <a href="Details.php?mod=false" class="btn btn-success">Add New</a>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <form action="index.php?todo=search" method="POST">
-                    <label for="search">Search(by name):</label>
-                    <input type="text" id="search" name="search">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </form>
-            </div>
-            <div class="col-md-2">
-                <a href="index.php" class="btn btn-warning">Reset Search and Sort</a>
-            </div>
+            <?php 
+                if ($confirm != "sent") {
+                    echo ' 
+                    <div class="col-md-4 col-sm-12">
+                        <a href="Details.php?mod=false" class="btn btn-success">Add New</a>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <form action="index.php?todo=search" method="POST">
+                            <label for="search">Search(by name):</label>
+                            <input type="text" id="search" name="search">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="index.php" class="btn btn-warning">Reset Search and Sort</a>
+                    </div>';
+                }
+            ?>
+           
         </div>
         <table class="table table-striped">
             <thead>
