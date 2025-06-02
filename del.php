@@ -1,6 +1,5 @@
 <?php 
     $id = htmlspecialchars($_GET["id"]) ?? -1;
-    echo $id;
     include_once("DatabaseManager.php");
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $yes = $_POST["yes"] ?? false;

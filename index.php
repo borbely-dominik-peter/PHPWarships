@@ -4,6 +4,8 @@
     
     $DatabaseManager = new DatabaseManager("localhost","root","","warships");
 
+    $SearchQuery = "";
+
     $todo = $_GET["todo"] ?? "";
     $todo = htmlspecialchars($todo);
 
@@ -34,13 +36,11 @@
     }
     if ($confirm == "sent") {
         $WarningStr = "To confirm deletion, scroll to the selected item and click the confirm deletion button!";
-        //echo "<b>To confirm deletion, scroll to the selected item and click the confirm deletion button!</b>";
     }
     if ($confirmres == "true") {
         $DatabaseManager->RemoveFromDB($id);
     }
     if ($todo == "mod") {
-        var_dump($_POST);
         $name = htmlspecialchars($_POST["name"]) ?? "";
         $class = htmlspecialchars($_POST["class"]) ?? "";
         $year = htmlspecialchars($_POST["launched"]) ?? -1;
@@ -59,7 +59,7 @@
             $SearchQuery = $_GET["SQuery"] ?? "";
         }
         $Data = $DatabaseManager->Search($Data, $SearchQuery);
-        echo sizeof($Data);
+
     }
     if ($sort != "") {
         $Data = TableSort($sort, $dir, $Data);
@@ -77,7 +77,8 @@
 </head>
 <body>
     <div id="main" class="container">
-        <h1 class="text-center my-5">WW1 Warships</h1>
+        <img src="HeaderImage.png" style="width:100%;">
+        <h1 class="text-center mb-5 mt-1">WW1 Warships</h1>
         <?php 
             if ($confirm == "sent") {
                 echo "<p style='color:red; text-align:center;'><b>$WarningStr</b></p>";
